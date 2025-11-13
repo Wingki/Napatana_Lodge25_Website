@@ -5,6 +5,7 @@ import GalleryModal from './GalleryModal';
 
 interface RoomsProps {
   onBookRoom: (room: Room) => void;
+  onOpenGallery: (images: string[]) => void;
 }
 
 const roomsData: Room[] = [
@@ -134,17 +135,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, onBookRoom, onOpenGallery, co
     );
 };
 
-const Rooms: React.FC<RoomsProps> = ({ onBookRoom }) => {
-  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+const Rooms: React.FC<RoomsProps> = ({ onBookRoom, onOpenGallery }) => {
   const [confirmingRoomId, setConfirmingRoomId] = useState<number | null>(null);
-
-  const handleOpenGallery = (images: string[]) => {
-    setGalleryImages(images);
-  };
-
-  const handleCloseGallery = () => {
-    setGalleryImages(null);
-  };
 
   return (
     <section className="py-20 lg:py-32 bg-secondary/10">
@@ -161,14 +153,13 @@ const Rooms: React.FC<RoomsProps> = ({ onBookRoom }) => {
               key={room.id} 
               room={room} 
               onBookRoom={onBookRoom} 
-              onOpenGallery={handleOpenGallery}
+              onOpenGallery={onOpenGallery}
               confirmingRoomId={confirmingRoomId}
               setConfirmingRoomId={setConfirmingRoomId}
             />
           ))}
         </div>
       </div>
-      {galleryImages && <GalleryModal images={galleryImages} onClose={handleCloseGallery} />}
     </section>
   );
 };

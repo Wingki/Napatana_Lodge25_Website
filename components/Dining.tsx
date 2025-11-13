@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 
 type MenuCategory = 'breakfast' | 'lunch' | 'dinner';
 
-const menuData = {
+interface MenuItem {
+  name: string;
+  description: string;
+  image?: string;
+}
+
+const menuData: { [key in MenuCategory]: MenuItem[] } = {
   breakfast: [
     { name: 'Tropical Fruit Platter', description: 'A vibrant selection of fresh, local fruits like pineapple, mango, and passionfruit.' },
     { name: 'Sago Pancakes (Saksak)', description: 'A traditional delicacy, served warm with coconut cream and a drizzle of local honey.' },
@@ -18,6 +24,11 @@ const menuData = {
   dinner: [
     { name: 'Coconut Crab Curry', description: 'A rich, aromatic curry featuring succulent crab meat cooked in coconut cream with local spices.' },
     { name: 'Slow-Cooked Pork (Mumu-style)', description: 'Tender pork, slow-cooked with root vegetables, inspired by the traditional mumu feast.' },
+    { 
+      name: 'Signature Grilled Reef Fish', 
+      description: 'A whole, locally-sourced reef fish, grilled to perfection with citrus and herbs. A true taste of Milne Bay.',
+      image: 'https://res.cloudinary.com/dzac4g9vp/image/upload/v1763000507/486143806_1086389130174147_4792934733789176422_n_-_Copy_-_Copy_ofl21x.jpg'
+    },
     { name: 'Seafood Platter for Two', description: 'A generous platter of grilled fish, prawns, and calamari, perfect for sharing.' },
     { name: 'Vegetable Stir-fry with Tofu', description: 'A medley of fresh, seasonal vegetables and tofu in a savory sauce, served with rice.' },
   ]
@@ -36,7 +47,11 @@ const TabButton: React.FC<{ label: string; isActive: boolean; onClick: () => voi
     </button>
 );
 
-const Dining: React.FC = () => {
+interface DiningProps {
+    onOpenGallery: (images: string[]) => void;
+}
+
+const Dining: React.FC<DiningProps> = ({ onOpenGallery }) => {
     const [activeTab, setActiveTab] = useState<MenuCategory>('dinner');
 
     return (
@@ -64,11 +79,26 @@ const Dining: React.FC = () => {
                         </div>
 
                         {/* Menu Content */}
-                        <div className="space-y-4 animate-fade-in">
+                        <div className="space-y-6 animate-fade-in min-h-[300px]">
                             {menuData[activeTab].map(item => (
-                                <div key={item.name}>
+                                <div key={item.name} className="flex items-start gap-4">
+                                  {item.image && (
+                                    <button
+                                      onClick={() => onOpenGallery([item.image!])}
+                                      className="flex-shrink-0 group focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
+                                      aria-label={`View larger image of ${item.name}`}
+                                    >
+                                      <img 
+                                        src={item.image} 
+                                        alt={item.name} 
+                                        className="w-24 h-24 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105"
+                                      />
+                                    </button>
+                                  )}
+                                  <div className="flex-grow">
                                     <h4 className="text-xl font-bold font-serif text-primary">{item.name}</h4>
                                     <p className="text-primary/70">{item.description}</p>
+                                  </div>
                                 </div>
                             ))}
                         </div>

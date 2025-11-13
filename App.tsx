@@ -10,11 +10,13 @@ import Testimonials from './components/Testimonials';
 import Staff from './components/Staff';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
+import GalleryModal from './components/GalleryModal';
 import { Room } from './types';
 
 const App: React.FC = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
 
   const sections = {
     about: useRef<HTMLDivElement>(null),
@@ -39,6 +41,14 @@ const App: React.FC = () => {
     setIsBookingModalOpen(false);
     setSelectedRoom(null);
   }, []);
+  
+  const openGallery = useCallback((images: string[]) => {
+    setGalleryImages(images);
+  }, []);
+
+  const closeGallery = useCallback(() => {
+    setGalleryImages(null);
+  }, []);
 
   return (
     <div className="bg-light font-sans text-primary">
@@ -49,10 +59,10 @@ const App: React.FC = () => {
           <About />
         </div>
         <div ref={sections.rooms}>
-          <Rooms onBookRoom={openBookingModal} />
+          <Rooms onBookRoom={openBookingModal} onOpenGallery={openGallery} />
         </div>
         <div ref={sections.dining}>
-          <Dining />
+          <Dining onOpenGallery={openGallery} />
         </div>
         <div ref={sections.bar}>
           <Bar />
@@ -75,6 +85,7 @@ const App: React.FC = () => {
           initialRoom={selectedRoom}
         />
       )}
+      {galleryImages && <GalleryModal images={galleryImages} onClose={closeGallery} />}
     </div>
   );
 };
