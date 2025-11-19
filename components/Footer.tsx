@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -26,7 +25,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-primary-light text-center text-white/50 text-sm">
-          <p>&copy; {new Date().getFullYear()} Napatana Lodge. All Rights Reserved. Website crafted with ❤️.</p>
+          <p>&copy; {new Date().getFullYear()} Napatana Lodge. All Rights Reserved. Website crafted with ❤️. <a href="#admin" className="opacity-50 hover:opacity-100">Admin</a></p>
         </div>
       </div>
     </footer>

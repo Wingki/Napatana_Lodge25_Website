@@ -1,14 +1,8 @@
+import React, { useState, useEffect } from 'react';
+import { Activity } from '../types';
+import { getActivities } from '../data';
 
-import React from 'react';
-
-const activities = [
-  { name: 'Scuba Diving', description: 'Explore world-class dive sites with vibrant coral reefs and diverse marine life.', image: 'https://picsum.photos/600/400?image=1082' },
-  { name: 'Snorkeling Trips', description: 'Discover the underwater wonders just a short boat ride from the lodge.', image: 'https://picsum.photos/600/400?image=1069' },
-  { name: 'Cultural Village Tours', description: 'Immerse yourself in the rich history and traditions of Milne Bay culture.', image: 'https://picsum.photos/600/400?image=103' },
-  { name: 'Island Hopping', description: 'Visit nearby uninhabited islands for a day of picnicking, swimming, and exploring.', image: 'https://picsum.photos/600/400?image=15' },
-];
-
-const ActivityCard: React.FC<{ activity: typeof activities[0] }> = ({ activity }) => (
+const ActivityCard: React.FC<{ activity: Activity }> = ({ activity }) => (
     <div className="relative rounded-lg overflow-hidden shadow-xl group">
         <img src={activity.image} alt={activity.name} className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-500" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -20,6 +14,12 @@ const ActivityCard: React.FC<{ activity: typeof activities[0] }> = ({ activity }
 );
 
 const Activities: React.FC = () => {
+  const [activities, setActivities] = useState<Activity[]>([]);
+
+  useEffect(() => {
+    setActivities(getActivities());
+  }, []);
+
   return (
     <section className="py-20 lg:py-32 bg-secondary/10">
       <div className="container mx-auto px-6">

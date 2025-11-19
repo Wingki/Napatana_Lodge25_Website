@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
+
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,12 +12,28 @@ import Staff from './components/Staff';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
 import GalleryModal from './components/GalleryModal';
+import AdminPanel from './components/AdminPanel';
 import { Room } from './types';
 
 const App: React.FC = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [galleryImages, setGalleryImages] = useState<string[] | null>(null);
+  const [isAdminView, setIsAdminView] = useState(window.location.hash === '#admin');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setIsAdminView(window.location.hash === '#admin');
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    if (isAdminView) {
+      window.scrollTo(0, 0);
+    }
+  }, [isAdminView]);
 
   const sections = {
     about: useRef<HTMLDivElement>(null),
@@ -49,6 +66,10 @@ const App: React.FC = () => {
   const closeGallery = useCallback(() => {
     setGalleryImages(null);
   }, []);
+
+  if (isAdminView) {
+    return <AdminPanel />;
+  }
 
   return (
     <div className="bg-light font-sans text-primary">

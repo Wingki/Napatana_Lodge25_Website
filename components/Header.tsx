@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { MenuIcon, CloseIcon } from './Icons';
 
@@ -36,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, onBookNow }) => {
       <NavLink onClick={() => onNavigate('activities')}>Activities</NavLink>
       <NavLink onClick={() => onNavigate('testimonials')}>Testimonials</NavLink>
       <NavLink onClick={() => onNavigate('staff')}>Our Team</NavLink>
+      <a href="#admin" className="text-white hover:text-secondary transition-colors duration-300 py-2">Login</a>
     </>
   );
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Room } from '../types';
+import { getRooms } from '../data';
 import { CloseIcon, CheckIcon } from './Icons';
 
 interface BookingModalProps {
@@ -7,12 +8,6 @@ interface BookingModalProps {
   onClose: () => void;
   initialRoom: Room | null;
 }
-
-const roomsData: Room[] = [
-  { id: 1, name: 'Oceanfront Bungalow', price: 450, description: '', imageUrls: [], amenities: [] },
-  { id: 2, name: 'Seaview Queen Room', price: 320, description: '', imageUrls: [], amenities: [] },
-  { id: 3, name: 'Garden View Twin', price: 250, description: '', imageUrls: [], amenities: [] },
-];
 
 const InputField: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { label: string }> = ({ label, ...props }) => (
   <div>
@@ -31,17 +26,23 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, initialRoo
   const [email, setEmail] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [roomsData, setRoomsData] = useState<Room[]>([]);
   
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setRoomsData(getRooms());
     } else {
       document.body.style.overflow = 'auto';
     }
     return () => { document.body.style.overflow = 'auto'; };
   }, [isOpen]);
+
+  useEffect(() => {
+    setSelectedRoom(initialRoom);
+  }, [initialRoom]);
 
   const handleNext = () => setStep(prev => prev + 1);
   const handleBack = () => setStep(prev => prev - 1);

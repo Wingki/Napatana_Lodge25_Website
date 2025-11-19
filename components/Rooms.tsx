@@ -1,53 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Room } from '../types';
+import { getRooms } from '../data';
 import { WifiIcon, AirConIcon, SeaViewIcon } from './Icons';
-import GalleryModal from './GalleryModal';
 
 interface RoomsProps {
   onBookRoom: (room: Room) => void;
   onOpenGallery: (images: string[]) => void;
 }
-
-const roomsData: Room[] = [
-  {
-    id: 1,
-    name: 'Oceanfront Bungalow',
-    description: 'Wake up to the sound of waves in our private bungalows with direct sea views.',
-    price: 450,
-    imageUrls: [
-        'https://picsum.photos/1200/800?image=1040',
-        'https://picsum.photos/1200/800?image=1041',
-        'https://picsum.photos/1200/800?image=1042',
-        'https://picsum.photos/1200/800?image=1043',
-    ],
-    amenities: ['Sea View', 'Air Conditioning', 'Free WiFi'],
-  },
-  {
-    id: 2,
-    name: 'Seaview Queen Room',
-    description: 'Comfortable and spacious rooms with a private balcony overlooking the ocean.',
-    price: 320,
-    imageUrls: [
-        'https://picsum.photos/1200/800?image=219',
-        'https://picsum.photos/1200/800?image=220',
-        'https://picsum.photos/1200/800?image=221',
-    ],
-    amenities: ['Sea View', 'Air Conditioning', 'Free WiFi'],
-  },
-  {
-    id: 3,
-    name: 'Garden View Twin',
-    description: 'Nestled amongst our lush tropical gardens, perfect for a peaceful retreat.',
-    price: 250,
-    imageUrls: [
-        'https://picsum.photos/1200/800?image=1025',
-        'https://picsum.photos/1200/800?image=1026',
-        'https://picsum.photos/1200/800?image=1027',
-        'https://picsum.photos/1200/800?image=1028',
-    ],
-    amenities: ['Air Conditioning', 'Free WiFi'],
-  },
-];
 
 const Amenity: React.FC<{ icon: React.ReactNode; label: string }> = ({ icon, label }) => (
     <div className="flex items-center text-primary/70">
@@ -137,6 +96,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, onBookRoom, onOpenGallery, co
 
 const Rooms: React.FC<RoomsProps> = ({ onBookRoom, onOpenGallery }) => {
   const [confirmingRoomId, setConfirmingRoomId] = useState<number | null>(null);
+  const [roomsData, setRoomsData] = useState<Room[]>([]);
+
+  useEffect(() => {
+    setRoomsData(getRooms());
+  }, []);
 
   return (
     <section className="py-20 lg:py-32 bg-secondary/10">
